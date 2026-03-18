@@ -1,0 +1,478 @@
+{
+  "info": {
+    "_postman_id": "b5d611fd-3f51-43da-9804-07cfa7708464",
+    "name": "qa HM 18",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52389797",
+    "_collection_link": "https://go.postman.co/collection/52389797-b5d611fd-3f51-43da-9804-07cfa7708464?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "create user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains id\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.id).to.not.be.undefined;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Name matches request\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.name).to.eql(pm.variables.get(\"validName\"));\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "packages": {},
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Petrovich\",\r\n  \"age\": 37,\r\n  \"gender\": \"male\",\r\n  \"city\": \"Kyiv\"\r\n\r\n}\r\n\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users",
+          "protocol": "https",
+          "host": [
+            "em",
+            "staging",
+            "api",
+            "onereach",
+            "ai"
+          ],
+          "path": [
+            "http",
+            "1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"ID matches\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.id).to.eql(pm.environment.get(\"userId\"));\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users?id=28a28008-a50f-4a41-923e-fc71adf81c1e",
+          "protocol": "https",
+          "host": [
+            "em",
+            "staging",
+            "api",
+            "onereach",
+            "ai"
+          ],
+          "path": [
+            "http",
+            "1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+            "users"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "28a28008-a50f-4a41-923e-fc71adf81c1e"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "edit user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"PATCH - Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"PATCH - Name updated correctly\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.name).to.eql(\"PetrovichUltra\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": \"28a28008-a50f-4a41-923e-fc71adf81c1e\",\r\n  \"name\": \"PetrovichUltra\",\r\n  \"age\": 80,\r\n  \"gender\": \"male\",\r\n  \"city\": \"Cherkassy\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users",
+          "protocol": "https",
+          "host": [
+            "em",
+            "staging",
+            "api",
+            "onereach",
+            "ai"
+          ],
+          "path": [
+            "http",
+            "1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"DELETE - Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"DELETE - User deleted message or empty body\", function () {\r",
+              "    var responseText = pm.response.text();\r",
+              "    pm.expect(responseText.length >= 0).to.be.true;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "packages": {},
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users?id=28a28008-a50f-4a41-923e-fc71adf81c1e",
+          "protocol": "https",
+          "host": [
+            "em",
+            "staging",
+            "api",
+            "onereach",
+            "ai"
+          ],
+          "path": [
+            "http",
+            "1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+            "users"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "28a28008-a50f-4a41-923e-fc71adf81c1e"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create invalid user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validation error for age\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"age\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Petr\",\r\n  \"age\": 37,\r\n  \"gender\": \"male\",\r\n  \"city\": \"Kyiv\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users",
+          "protocol": "https",
+          "host": [
+            "em",
+            "staging",
+            "api",
+            "onereach",
+            "ai"
+          ],
+          "path": [
+            "http",
+            "1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get invalid user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"ID matches\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.id).to.eql(pm.environment.get(\"userId\"));\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users?id=34db0673-da83-485d-bcb2-82ad24f8d",
+          "protocol": "https",
+          "host": [
+            "em",
+            "staging",
+            "api",
+            "onereach",
+            "ai"
+          ],
+          "path": [
+            "http",
+            "1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+            "users"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "34db0673-da83-485d-bcb2-82ad24f8d"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "edit invalid user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validation error for age\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"age\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": \"28a28008-a50f-4a41-923e-fc71adf81c1e\",\r\n  \"name\": \"PetrovichUltraSuperMegaGigabyte\",\r\n  \"age\": 801,\r\n  \"gender\": \"SUPERmale\",\r\n  \"city\": \"Cherkassy\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users",
+          "protocol": "https",
+          "host": [
+            "em",
+            "staging",
+            "api",
+            "onereach",
+            "ai"
+          ],
+          "path": [
+            "http",
+            "1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete invalid user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"User not found message returned\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"not found\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://em.staging.api.onereach.ai/http/1b3bebb7-e882-4f1e-a74b-ee381bfa69d6/users?id=1233148-dsjf",
+          "protocol": "https",
+          "host": [
+            "em",
+            "staging",
+            "api",
+            "onereach",
+            "ai"
+          ],
+          "path": [
+            "http",
+            "1b3bebb7-e882-4f1e-a74b-ee381bfa69d6",
+            "users"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "1233148-dsjf"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
